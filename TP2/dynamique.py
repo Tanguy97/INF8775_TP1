@@ -7,8 +7,6 @@ def dynamique(filename):
     file = open(filename,"r")
     exSize = int(file.readline())
 
-    #print("\n\n\n\n____", exSize, "____")
-
     #Conversion des données dans un tableau à 2 lignes
     data = np.loadtxt(filename, skiprows = 1)
 

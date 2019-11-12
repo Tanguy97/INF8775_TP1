@@ -7,8 +7,6 @@ def glouton(filename):
     file = open(filename,"r")
     exSize = int(file.readline())
 
-    #print("\n\n\n\n____", exSize, "____")
-
     #Conversion des données dans un tableau à 2 lignes
     data = np.loadtxt(filename, skiprows = 1)
 
@@ -20,21 +18,18 @@ def glouton(filename):
     #Mesure de la durée d'exécution
     start = time.time()
 
+    #Calcul des rentabilités
+    rentabilites = [(data[1][i-1] / i) for i in range(1, exSize + 1)]
+
     while(currentSize > 0):
-        #Calcul des rentabilités
-        rentabilites = [(data[1][i-1] / i) for i in range(1, currentSize + 1)]
-        #On récupère la position du maximum
-        id = rentabilites.index(max(rentabilites))
+        #On récupère la position du maximum parmi les rentabilités encore disponibles
+        id = rentabilites.index(max(rentabilites[0:currentSize]))
 
         #On effectue la coupe de rentabilité maximale
         cut = id + 1
         solution.append(cut)
         #On récupère le profit associé
         profit = int(data[1][id])
-
-        #print("\nCurrent size : ", currentSize)
-        #print(rentabilites)
-        #print("Cut : ", cut, "  (profit : " + str(profit) + ")")
 
         #On actualise la taille de l'exemplaire
         currentSize = currentSize - cut
@@ -43,9 +38,6 @@ def glouton(filename):
 
     end = time.time()
     delta = end - start
-
-    #print("\n\nTotal value : ", value)
-    #print("Computed in : ", delta, " seconds.")
 
     return value, delta, solution
 
