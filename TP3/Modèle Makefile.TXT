@@ -1,0 +1,19 @@
+main.out: main.o Deck.o Utils.o Solution.o Problem.o
+	g++ -O3 -o main.out main.o Deck.o Utils.o Solution.o Problem.o
+
+main.o: main.cpp Problem.h
+	g++ -c main.cpp
+
+Deck.o: Deck.cpp Deck.h
+	g++ -c Deck.cpp
+
+Utils.o: Utils.cpp Utils.h
+	g++ -c Utils.cpp
+
+Solution.o: Solution.cpp Solution.h Deck.h Utils.h
+	g++ -c Solution.cpp
+
+Problem.o: Problem.cpp Problem.h Solution.h
+	g++ -c Problem.cpp
+
+
