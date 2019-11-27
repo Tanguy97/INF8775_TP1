@@ -28,6 +28,12 @@ int Problem::getBestValue(){
     return getSolutionValue(bestSolution);
 }
 
+void Problem::printBestDeckValues(){
+    for(int i=0; i<nbDecks; i++){
+        cout << bestSolution->getDeckValue(i, values, synergies) << " ; ";
+    }
+}
+
 //Charge les données d'un exemplaire et les stocke dans les attributs de l'instance
 void Problem::loadExample(string filename){
     values = vector<int>(); //Les paramètres sont réinitialisés avant de charger un nouvel exemplaire
@@ -69,6 +75,17 @@ void Problem::loadExample(string filename){
 //Initialise aléatoirement la meilleure solution
 void Problem::initRandom(){
     bestSolution = new Solution(deckSize, nbDecks);
+}
+
+
+//Initialise de façon gloutonne la meilleure solution
+void Problem::initGreedy(){
+    bestSolution = new Solution(deckSize, nbDecks, values, synergies);
+}
+
+
+void Problem::saveBestSolution(Solution *s){
+    s = new Solution(*bestSolution);
 }
 
 //Effectue une recherche locale pour obtenir la meilleure solution possible

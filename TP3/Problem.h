@@ -22,12 +22,16 @@ public :
 
     int getSolutionValue(Solution *sol); //Renvoie la valeur d'une solution
     int getBestValue(); //Renvoie la valeur de la meilleur solution trouvée
+    void printBestDeckValues();
 
     //Charge les données d'un exemplaire et les stocke dans les attributs de l'instance
     void loadExample(string filename);
 
     void initRandom(); //Initialise aléatoirement la meilleure solution
-
+    void initGreedy(); //Initialise de façon gloutonne la meilleure solution
+    
+    void saveBestSolution(Solution *s);
+    
     void solveLocalSearch(); //Effectue une recherche locale pour obtenir la meilleure solution possible
     void solveShareSearch();
     void writeOutput(string filename); //Ecrit la meilleure solution dans un fichier texte

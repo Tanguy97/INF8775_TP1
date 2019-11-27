@@ -73,6 +73,54 @@ Solution::Solution(int n, int m){
     }
 }
 
+
+//Constructeur complet : génération gloutonne des decks
+Solution::Solution(int n, int m, vector<int> values, vector< vector<int>> synergies){
+    deckSize = n;
+    nbDecks = m;
+    decks = vector<Deck*>();
+    
+    int nbCards = deckSize*nbDecks;
+    vector<int> remainingCards(nbCards); //Indices des cartes à répartir dans les decks (initialement 0, 1, ..., nbCards-1)
+    for(int l=0; l<nbCards; l++){
+        remainingCards[l] = l;
+    }
+    
+    vector<int> cards(deckSize, -1); //Une valeur négative représente une case vide dans un deck
+    
+    for(int i=0; i<nbDecks; i++){
+        decks.push_back(new Deck(deckSize, cards));
+    }
+    
+    int cardId = -1;
+    
+    for(int b=0; b<nbDecks; b++){
+        cardId = popRandomElement(remainingCards);
+        decks[b]->setCard(cardId, 0);
+    }
+    
+    vector<int> currentDeckValues(nbDecks, numeric_limits<int>::min()); //On stocke les valeurs courantes de chaque deck
+    
+    int bestCardId = 0;
+    int currentValue = numeric_limits<int>::min();
+    
+    for(int a=1; a<deckSize; a++){
+        for(int j=0; j<nbDecks; j++){ //Remplissage des decks
+            for(int k=0; k<remainingCards.size(); k++){
+                decks[j]->setCard(remainingCards[k], a);
+                currentValue = decks[j]->value(values, synergies);
+                if(currentValue > currentDeckValues[j]){
+                    bestCardId = k;
+                    currentDeckValues[j] = currentValue;
+                }
+            }
+            decks[j]->setCard(remainingCards[bestCardId], a);
+            swap(remainingCards[bestCardId], remainingCards[remainingCards.size() - 1]);
+            remainingCards.pop_back();
+        }
+    }
+}
+
 //Calcule la valeur totale de la solution : celle du paquet le plus faible
 int Solution::value(vector<int> values, vector< vector<int>> synergies){
   int worstDeckValue = numeric_limits<int>::max();
@@ -130,6 +178,10 @@ int Solution::getWorstDeck(){
 
 int Solution::getBestDeck(){
     return bestDeck;
+}
+
+int Solution::getDeckValue(int i, vector<int> values, vector< vector<int>> synergies){
+    return decks[i]->value(values, synergies);
 }
 //Echange 2 cartes
 void Solution::swapCards(int deck1, int deck2, int card1, int card2){

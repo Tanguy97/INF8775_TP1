@@ -27,6 +27,8 @@ public:
     int getMaxValue();
     int getBestDeck();
     int getWorstDeck();
+    int getDeckValue(int i, vector<int> values, vector< vector<int>> synergies);
+    
     void setValue(vector<int> values, vector< vector<int>> synergies);
     void swapCards(int deck1, int deck2, int card1, int card2); //Echange 2 cartes
 
@@ -37,6 +39,7 @@ public:
     //Constructeurs
     Solution(); //Constructeur par défaut : solution vide
     Solution(int n, int m); //Génération aléatoire des decks
+    Solution(int n, int m, vector<int> values, vector< vector<int>> synergies);  //Construction gloutonne
     Solution(Solution const& s);
 
     Solution& operator=(Solution const& s) ;

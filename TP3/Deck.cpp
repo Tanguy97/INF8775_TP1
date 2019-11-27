@@ -44,9 +44,13 @@ int Deck::value(vector<int> values, vector<vector<int>> synergies){
     int totalValue = 0;
     
     for(int i = 0; i<deckSize; i++){
-        totalValue += values[cards[i]]; //Somme des qualités de base des cartes
-        for(int j = i; j<deckSize; j++){
-            totalValue += synergies[cards[i]][cards[j]]; //Somme des synergies de chaque paire de cartes
+        if(cards[i] >= 0){ //Une valeur négative représente une case vide
+            totalValue += values[cards[i]]; //Somme des qualités de base des cartes
+            for(int j = i; j<deckSize; j++){
+                if(cards[j] >= 0){
+                    totalValue += synergies[cards[i]][cards[j]]; //Somme des synergies de chaque paire de cartes
+                }
+            }
         }
     }
     

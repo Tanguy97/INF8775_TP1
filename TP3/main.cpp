@@ -13,13 +13,27 @@ int main(int argc, char** argv) {
     int deckSize = problem.getDeckSize();
     int nbDecks = problem.getNbDecks() ;
 
+    Solution *bestSolution = new Solution(deckSize, nbDecks);
 
     //Construction d'une solution aléatoire pour cet exemplaire
-    problem.initRandom();
-
+    //problem.initRandom();
+    int N = 100;
+    int bestValue = numeric_limits<int>::min();
+    int currentValue = numeric_limits<int>::min();
+    for(int k=0; k<N; k++){
+        problem.initGreedy();
+        currentValue = problem.getBestValue();
+        if(currentValue > bestValue){
+            cout << currentValue << endl;
+            bestValue = currentValue;
+            problem.saveBestSolution(bestSolution);
+        }
+    }
+    
+    cout << problem.getSolutionValue(bestSolution) << endl;
 
     //Résolution
-    problem.solveShareSearch();
+    //problem.solveShareSearch();
     //problem.solveLocalSearch();
 
     //Ecriture de la solution dans un fichier texte
@@ -30,6 +44,7 @@ int main(int argc, char** argv) {
     //Affichage de la valeur de la solution
     cout << deckSize << " cartes par deck , " << nbDecks << " decks :" << endl;
     cout << problem.getBestValue() << "\n" << endl;
+    problem.printBestDeckValues();
 
 
 
