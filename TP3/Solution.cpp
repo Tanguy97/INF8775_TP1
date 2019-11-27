@@ -1,16 +1,19 @@
 #include "Solution.h"
 
 //Copie une solution
-Solution& Solution::operator=(Solution const& s) 
+Solution& Solution::operator=(Solution const& s)
 {
     deckSize = s.deckSize;
     nbDecks = s.nbDecks;
-    
+    minValue=s.minValue;
+    maxValue=s.maxValue;
+    worstDeck=s.worstDeck;
+    bestDeck=s.bestDeck;
     decks = vector<Deck *>();
     for(int i = 0; i<nbDecks; i++){
         decks.push_back(new Deck(*(s.decks[i])));
     }
-    
+
     return *this;
 }
 
@@ -18,15 +21,22 @@ Solution& Solution::operator=(Solution const& s)
 Solution::Solution(){
     deckSize = 0;
     nbDecks = 0;
+    minValue=0;
+    maxValue=0;
+    worstDeck=0;
+    bestDeck=0;
     decks = vector<Deck*>();
 }
 
 //Constructeur par recopie
-Solution::Solution(Solution const& s) 
+Solution::Solution(Solution const& s)
 {
     deckSize = s.deckSize;
     nbDecks = s.nbDecks;
-    
+    minValue=s.minValue;
+    maxValue=s.maxValue;
+    worstDeck=s.worstDeck;
+    bestDeck=s.bestDeck;
     decks = vector<Deck *>();
     for(int i = 0; i<nbDecks; i++){
         decks.push_back(new Deck(*(s.decks[i])));
@@ -39,16 +49,16 @@ Solution::Solution(int n, int m){
     nbDecks = m;
 
     decks = vector<Deck*>();
-    
+
     int nbCards = n*m;
     int id = 0;
-    
+
     Deck* currentDeck = new Deck();
     vector<int> currentCards;
-    
+
     //Génération d'un mélange aléatoire des cartes
     vector<int> shuffle = generateRandomShuffle(nbCards);
-    
+
     //Création des decks en partageant le paquet de cartes mélangé
     for(int i=0; i<nbDecks; i++){
          for(int j=0; j<deckSize; j++){
@@ -58,24 +68,43 @@ Solution::Solution(int n, int m){
          }
          currentDeck = new Deck(deckSize, currentCards);
          decks.push_back(currentDeck);
-         
+
          currentCards = vector<int>();
     }
 }
 
 //Calcule la valeur totale de la solution : celle du paquet le plus faible
 int Solution::value(vector<int> values, vector< vector<int>> synergies){
-    int worstDeckValue = numeric_limits<int>::max();
-    int currentValue = 0;
-    
-    for(int i=0; i<nbDecks; i++){
-        currentValue = (decks[i])->value(values, synergies);
-        if(currentValue < worstDeckValue){
-            worstDeckValue = currentValue;
-        }      
-    }
-    
-    return worstDeckValue;
+  int worstDeckValue = numeric_limits<int>::max();
+   int currentValue = 0;
+
+   for(int i=0; i<nbDecks; i++){
+       currentValue = (decks[i])->value(values, synergies);
+       if(currentValue < worstDeckValue){
+           worstDeckValue = currentValue;
+       }
+   }
+
+   return worstDeckValue;
+}
+
+void Solution::setValue(vector<int> values, vector< vector<int>> synergies){
+  minValue = numeric_limits<int>::max();
+  maxValue = numeric_limits<int>::min();
+  worstDeck=0;
+  bestDeck=0;
+  int currentValue = 0;
+  for(int i=0; i<nbDecks; i++){
+      currentValue = (decks[i])->value(values, synergies);
+      if(currentValue < minValue){
+          worstDeck = i;
+          minValue = currentValue;
+      }
+      if(currentValue > maxValue){
+          bestDeck = i;
+          maxValue = currentValue;
+      }
+  }
 }
 
 //Accesseurs en lecture
@@ -87,10 +116,25 @@ int Solution::getNbDecks(){
     return nbDecks;
 }
 
+int Solution::getMinValue(){
+    return minValue;
+}
+
+int Solution::getMaxValue(){
+    return maxValue;
+}
+
+int Solution::getWorstDeck(){
+    return worstDeck;
+}
+
+int Solution::getBestDeck(){
+    return bestDeck;
+}
 //Echange 2 cartes
 void Solution::swapCards(int deck1, int deck2, int card1, int card2){
     int memo = decks[deck1]->getCard(card1);
-    
+
     decks[deck1]->setCard(decks[deck2]->getCard(card2), card1);
     decks[deck2]->setCard(memo, card2);
 }
@@ -98,7 +142,7 @@ void Solution::swapCards(int deck1, int deck2, int card1, int card2){
 //Ecriture du résultat
 void Solution::writeOutput(string filename){
     ofstream exemplaire(filename); //Ouverture en écriture du fichier texte
-    
+
     if(exemplaire){
         for(int i=0; i<nbDecks; i++){
             for(int j=0; j<deckSize; j++){
