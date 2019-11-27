@@ -84,8 +84,9 @@ void Problem::initGreedy(){
 }
 
 
-void Problem::saveBestSolution(Solution *s){
-    s = new Solution(*bestSolution);
+Solution* Problem::saveBestSolution(){
+    Solution *s = new Solution(*bestSolution);
+    return s;
 }
 
 //Effectue une recherche locale pour obtenir la meilleure solution possible

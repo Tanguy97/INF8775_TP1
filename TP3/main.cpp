@@ -14,7 +14,8 @@ int main(int argc, char** argv) {
     int nbDecks = problem.getNbDecks() ;
 
     Solution *bestSolution = new Solution(deckSize, nbDecks);
-
+    cout << problem.getSolutionValue(bestSolution) << endl;
+    
     //Construction d'une solution aléatoire pour cet exemplaire
     //problem.initRandom();
     int N = 100;
@@ -26,7 +27,7 @@ int main(int argc, char** argv) {
         if(currentValue > bestValue){
             cout << currentValue << endl;
             bestValue = currentValue;
-            problem.saveBestSolution(bestSolution);
+            bestSolution = problem.saveBestSolution();
         }
     }
     

@@ -31,7 +31,7 @@ public :
     void initRandom(); //Initialise aléatoirement la meilleure solution
     void initGreedy(); //Initialise de façon gloutonne la meilleure solution
     
-    void saveBestSolution(Solution *s);
+    Solution* saveBestSolution();
     
     void solveLocalSearch(); //Effectue une recherche locale pour obtenir la meilleure solution possible
     void solveShareSearch();
