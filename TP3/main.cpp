@@ -32,6 +32,8 @@ int main(int argc, char** argv) {
     }
     
     cout << problem.getSolutionValue(bestSolution) << endl;
+    
+    problem.initCopy(bestSolution);
 
     //Résolution
     //problem.solveShareSearch();

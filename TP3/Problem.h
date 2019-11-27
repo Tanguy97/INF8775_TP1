@@ -30,6 +30,7 @@ public :
 
     void initRandom(); //Initialise aléatoirement la meilleure solution
     void initGreedy(); //Initialise de façon gloutonne la meilleure solution
+    void initCopy(Solution * s); //Initialisation par copie d'une solution
     
     Solution* saveBestSolution();
     

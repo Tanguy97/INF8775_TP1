@@ -84,6 +84,11 @@ void Problem::initGreedy(){
 }
 
 
+void Problem::initCopy(Solution * s){
+    bestSolution = new Solution(*s);
+}
+
+
 Solution* Problem::saveBestSolution(){
     Solution *s = new Solution(*bestSolution);
     return s;
