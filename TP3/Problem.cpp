@@ -1,5 +1,6 @@
 #include "Problem.h"
 #include <math.h>
+#include <time.h>
 //Constructeur par défaut : problème vide
 Problem::Problem(){
     deckSize = 0;
@@ -120,14 +121,16 @@ void Problem::solveLocalSearch(){
 
 //Share search
 void Problem::solveShareSearch(){
-  long int count = 0;
-  long int seuil=deckSize*deckSize*deckSize*deckSize*deckSize;
+  double duree = 0;
+  time_t start = time(NULL);
+  time_t step;
+  double seuil=60;
   Solution *currentSolution = new Solution(*bestSolution);
   currentSolution->setValue(values,synergies);
   int bestValue = currentSolution->getMinValue();
   int randomCard1 = 0;
   int randomCard2 = 0;
-  for(count=0;count<seuil;count++){
+  while(duree<seuil){
     randomCard1 = ceil(rand()%(deckSize));
     randomCard2 = ceil(rand()%(deckSize));
     currentSolution->swapCards(currentSolution->getWorstDeck(), currentSolution->getBestDeck(),randomCard1,randomCard2);
@@ -135,10 +138,15 @@ void Problem::solveShareSearch(){
     if(currentSolution->getMinValue() > bestValue){ //Si la solution obtenue est meilleure que la solution courante
         bestValue = currentSolution->getMinValue();
         bestSolution = new Solution(*currentSolution); //On met à jour la meilleure solution
-        count=0;
+        solveLocalSearch();//On l'améliore si ce n'est pas un optimum local
+        bestValue=getBestValue();
         cout << bestValue << endl;
     }
+    step = time(NULL);
+    duree = (step-start);
   }
+  cout << "local search" << endl;
+  solveLocalSearch();
 }
 
 //Ecrit la meilleure solution dans un fichier texte
