@@ -1,6 +1,5 @@
 #include "Problem.h"
 #include <math.h>
-#include <time.h>
 //Constructeur par défaut : problème vide
 Problem::Problem(){
     deckSize = 0;

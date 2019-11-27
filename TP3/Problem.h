@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Solution.h"
+#include "time.h"
 
 /*
  La classe Problem contient les informations sur les paramètres de l'exemplaire et sur l'état courant de la résolution.
