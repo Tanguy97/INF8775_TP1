@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Solution.h"
-#include "time.h"
 
 /*
  La classe Problem contient les informations sur les paramètres de l'exemplaire et sur l'état courant de la résolution.
@@ -23,7 +22,7 @@ public :
 
     int getSolutionValue(Solution *sol); //Renvoie la valeur d'une solution
     int getBestValue(); //Renvoie la valeur de la meilleur solution trouvée
-    void printBestDeckValues();
+    void printBestDeckValues(); //Affiche les valeurs des decks de la meilleure solution trouvée
 
     //Charge les données d'un exemplaire et les stocke dans les attributs de l'instance
     void loadExample(string filename);
@@ -32,10 +31,14 @@ public :
     void initGreedy(); //Initialise de façon gloutonne la meilleure solution
     void initCopy(Solution * s); //Initialisation par copie d'une solution
     
-    Solution* saveBestSolution();
+    Solution* saveBestSolution(); //Renvoie une copie de la meilleure solution trouvée
+    
+    void improveWorstDeck();
+    void improveWorstDeck3();
     
     void solveLocalSearch(); //Effectue une recherche locale pour obtenir la meilleure solution possible
     void solveShareSearch();
+    
     void writeOutput(string filename); //Ecrit la meilleure solution dans un fichier texte
 
     Problem(); //Constructeur par défaut : problème vide

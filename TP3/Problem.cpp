@@ -32,6 +32,7 @@ void Problem::printBestDeckValues(){
     for(int i=0; i<nbDecks; i++){
         cout << bestSolution->getDeckValue(i, values, synergies) << " ; ";
     }
+    cout << endl;
 }
 
 //Charge les données d'un exemplaire et les stocke dans les attributs de l'instance
@@ -93,6 +94,16 @@ Solution* Problem::saveBestSolution(){
     Solution *s = new Solution(*bestSolution);
     return s;
 }
+
+
+void Problem::improveWorstDeck(){
+    bestSolution->improveWorstDeck(values, synergies);
+}
+
+void Problem::improveWorstDeck3(){
+    bestSolution->improveWorstDeck3(values, synergies);
+}
+
 
 //Effectue une recherche locale pour obtenir la meilleure solution possible
 void Problem::solveLocalSearch(){
